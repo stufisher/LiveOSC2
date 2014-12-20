@@ -252,4 +252,5 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
                     
             # Assign xfader
             else:
+                pass
 
