@@ -80,6 +80,7 @@ class LO2DeviceComponent(DeviceComponent, LO2Mixin):
                 if p is not None:
                     if p < len(self._device.parameters):
                         prm = self._device.parameters[p]
+                        # type 2 = master track
                         if self._type == 2:
                             self.send('/live/'+self._track_types[self._type]+'device/range', self._device_id, p, prm.min, prm.max)
                         else:
@@ -90,6 +91,7 @@ class LO2DeviceComponent(DeviceComponent, LO2Mixin):
                     for i,p in enumerate(self._device.parameters):
                         prms.extend([i,p.min,p.max])
                 
+                    # type 2 = master track
                     if self._type == 2:
                         self.send('/live/'+self._track_types[self._type]+'device/range', self._device_id, *prms)
                     else:
@@ -98,26 +100,48 @@ class LO2DeviceComponent(DeviceComponent, LO2Mixin):
 
 
     def _device_param(self, msg, src):
+        self.log_message('_device_param message received')
+        self.log_message(str(msg))
+
         if self._is_device(msg) and self._device is not None:
             if self._type == 2:
                 p = msg[3] if len(msg) >= 4 else None
+                v = msg[4] if len(msg) >= 5 else None
             else:
                 p = msg[4] if len(msg) >= 5 else None
+                v = msg[5] if len(msg) >= 6 else None
             
-            
+            self.log_message('number of parameters = ' + str(len(self._device.parameters)))
+            self.log_message('p is ' + str(p)) 
+            self.log_message('v is ' + str(v))
+            self.log_message('p.value is ' + str(self._device.parameters[p].value))
+
             if p is not None:
                 if p < len(self._device.parameters):
                     prm = self._device.parameters[p]
+
+                    # If a parameter value was passed, set it.
+                    if v is not None:
+                        self.log_message('parameter ' + prm.name )
+                        self.log_message('max = ' + str(prm.max))
+                        self.log_message('min = ' + str(prm.min))
+                        prm.value = v
+                        self.log_message('Set prm.value to ' + str(prm.value))
+
+                    # Send the current value of the parameter.
+                    # type 2 = master track
                     if self._type == 2:
                         self.send('/live/'+self._track_types[self._type]+'device/param', p, prm.value, prm.name)
                     else:
                         self.send_default('/live/'+self._track_types[self._type]+'device/param', p, prm.value, prm.name)
             
+            # If a parameter id wasn't sent, send all the information about available parameters for this device.
             else:
                 prms = []
                 for i,p in enumerate(self._device.parameters):
                     prms.extend([i,p.value,p.name])
                 
+                # type 2 = master track
                 if self._type == 2:
                     self.send('/live/'+self._track_types[self._type]+'device/param', *prms)
                 else:
