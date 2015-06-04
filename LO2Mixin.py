@@ -20,8 +20,6 @@ import OSC
 # beginning _lo2_<FrameworkListener>
 def _decorate(fn, child, name):
     def wrap(*a, **kw):
-        LO2Mixin.log_message('calling LO2 wrapper: '+name)
-    
         ret = fn(*a, **kw)
         child(*a, **kw)
         
