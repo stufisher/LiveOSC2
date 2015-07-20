@@ -16,6 +16,10 @@ class LO2ParameterComponent(ControlSurfaceComponent, LO2Mixin):
     def set_parameter(self, param):
         self._parameter = param
         self._on_value_changed.subject = param
+
+
+    def set_parameter_value(self, value):
+        self._parameter.value = value
     
     
     @subject_slot('value')
@@ -33,3 +37,4 @@ class LO2ParameterComponent(ControlSurfaceComponent, LO2Mixin):
             p = list(self._parameter.canonical_parent.parameters).index(self._parameter)
             
             self.send('/live/'+self._track_types[ty]+'device/param', tid, d, p, self._parameter.value, str(self._parameter.name))
+            
