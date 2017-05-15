@@ -5,6 +5,8 @@ from LO2DeviceComponent import LO2DeviceComponent
 from LO2ParameterComponent import LO2ParameterComponent
 from LO2Mixin import LO2Mixin, wrap_init
 
+import Live
+
 class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
     
     @wrap_init
@@ -30,7 +32,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         self.add_callback('/live/track/stop', self._stop)
 
         for t in self._track_types:
-            self.add_callback('/live/'+t+'/crossfader', self._crossfader)
+            self.add_callback('/live/'+t+'crossfader', self._crossfader)
 
         for ty in ['track', 'return']:
             self.add_simple_callback('/live/'+ty+'/name', '_track', 'name', self._is_track, getattr(self, '_lo2__on_track_name_changed'))
@@ -184,7 +186,6 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
 
     # Callbacks
     def _lo2__on_mute_changed(self):
-        self.log_message('mute track type ' + str(self._type) + ' ' + str(self) + str(self._track))
         if self._type < 2 and self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'mute', self._track.mute)
 
@@ -248,9 +249,18 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         if self._is_track(msg) and self._track is not None:
             # Master
             if self._type == 2:
-                self._track.mixer_device.crossfader.value = msg[1]
+                self._track.mixer_device.crossfader.value = msg[2]
                     
             # Assign xfader
             else:
-                pass
+                v = msg[3] if len(msg) == 4 else None
+                if v is not None:
+                    if v == 0:
+                        self._track.mixer_device.crossfade_assign = Live.MixerDevice.MixerDevice.crossfade_assignments.A
+                    elif v == 1:
+                        self._track.mixer_device.crossfade_assign = Live.MixerDevice.MixerDevice.crossfade_assignments.NONE
+                    elif v == 2:
+                        self._track.mixer_device.crossfade_assign = Live.MixerDevice.MixerDevice.crossfade_assignments.B
+                else:
+                    self.send_default('/live/'+self._track_types[self._type]+'crossfader', self._track.mixer_device.crossfade_assign)
 
