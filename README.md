@@ -7,14 +7,14 @@ I have tidied up most of the calls to group them by type, as well as removing wh
 
 LiveOSC binds to localhost by default receiving OSC on 9000 and sending on 9001
 You can change this dyncamically using:
-    /live/set_peer <host> <port>
+    /live/set_peer [host] [port]
 
 
 Calls without an argument can be passed the dummy argument 'query' for systems that dont support sending osc messages without arguments.
 
 
 * Denotes this is sent automatically from Live upon change
-<int arg> Optional argument
+[int arg] Optional argument
 
 
 Song
@@ -26,7 +26,7 @@ create scene
 duplicate scene
 duplicate track
 
-/live/selection (int track_id, int scene_id, int width, int height
+/live/selection (int track_id, int scene_id, int width, int height)
     Set the position of the "red ring" in Live
 
 
@@ -71,13 +71,13 @@ Scenes
 /live/scenes
     Returns the number of scenes in the live set
     
-/live/scene/name (int scene_id, <string name>)
+/live/scene/name (int scene_id, [string name])
     Sets / gets the name for scene_id.
     *** LiveOSC no longer returns all scene names when scene_id is ommitted, use scene/block instead ***
 /live/scene/name/block (int scene_id, int height)
     Returns a block of scene names
 
-/live/scene/color (int scene_id, <int color>)
+/live/scene/color (int scene_id, [int color])
     Sets / gets the color for scene_id.
 
 /live/scene/state (int scene_id)
@@ -93,35 +93,35 @@ Tracks
 /live/tracks
     Returns the number of tracks and returns in the live set
 
-/live/track/arm (int track_id, <int state>)
-/live/return/arm (int track_id, <int state>)
-/live/master/arm (<int state>)
+/live/track/arm (int track_id, [int state])
+/live/return/arm (int track_id, [int state])
+/live/master/arm ([int state])
     Sets / gets the arm state of track_id
 
-/live/track/mute (int track_id, <int state>)
-/live/return/mute (int track_id, <int state>)
-/live/master/mute (<int state>)
+/live/track/mute (int track_id, [int state])
+/live/return/mute (int track_id, [int state])
+/live/master/mute ([int state])
     Sets / gets the mute state of track_id
 
-/live/track/solo (int track_id, <int state>)
-/live/return/solo (int track_id, <int state>)
-/live/master/solo (<int state>)
+/live/track/solo (int track_id, [int state])
+/live/return/solo (int track_id, [int state])
+/live/master/solo ([int state])
     Sets / gets the solo state of track_id
 
 
-/live/track/volume (int track_id, <float volume>)
-/live/return/volume (int track_id, <float volume>)
-/live/master/volume (<float volume>)
+/live/track/volume (int track_id, [float volume])
+/live/return/volume (int track_id, [float volume])
+/live/master/volume ([float volume])
     Sets / gets the mixer volume of track_id
 
-/live/track/panning (int track_id, <float panning>)
-/live/return/panning (int track_id, <float panning>)
-/live/master/panning (<float panning>)
+/live/track/panning (int track_id, [float panning])
+/live/return/panning (int track_id, [float panning])
+/live/master/panning ([float panning])
     Sets / gets the mixer panning of track_id
 
-/live/track/send (int track_id, int send_id, <float value>)
-/live/return/send (int track_id, int send_id, <float value>)
-/live/master/send (int send_id, <float value>)
+/live/track/send (int track_id, int send_id, [float value])
+/live/return/send (int track_id, int send_id, [float value])
+/live/master/send (int send_id, [float value])
     Sets / gets the mixer send_id of track_id
 
 
@@ -130,25 +130,25 @@ Tracks
 /live/master/select
     Selects the track
 
-/live/track/crossfader (int track_id, <int state>)
-/live/return/crossfader (int track_id, <int state>)
+/live/track/crossfader (int track_id, [int state])
+/live/return/crossfader (int track_id, [int state])
     Sets / gets the crossfader assignment of track_id (0=None, 1=A, 2=B)
 
 /live/master/crossfader
     Sets / gets the master crossfader position
 
 
-/live/track/name (int track_id, <string name>)
-/live/return/name (int track_id, <string name>)
+/live/track/name (int track_id, [string name])
+/live/return/name (int track_id, [string name])
     Sets / gets the name of track_id
 
-/live/track/color (int track_id, <int color>)
-/live/return/color (int track_id, <int color>)
+/live/track/color (int track_id, [int color])
+/live/return/color (int track_id, [int color])
     Sets / gets the color of track_id
 
 
-/live/track/stop (int track_id, <int state>)
-/live/track/state (int track_id, <int state>)
+/live/track/stop (int track_id, [int state])
+/live/track/state (int track_id, [int state])
 
 
 collapse
@@ -159,9 +159,9 @@ sub routing
 Devices
 -------
 
-/live/track/devices (int track_id, <int device_id>)
-/live/return/devices (int track_id, <int device_id>)
-/live/master/devices (<int device_id>)
+/live/track/devices (int track_id, [int device_id])
+/live/return/devices (int track_id, [int device_id])
+/live/master/devices ([int device_id])
 
 /live/track/device/range
 /live/return/device/range
