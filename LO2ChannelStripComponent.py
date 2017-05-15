@@ -103,7 +103,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
                     pr = 'value' if mixer else property
                     ot = float if mixer else int
                     
-                    if v:
+                    if v is not None:
                         setattr(obj, pr, v)
                     else:
                         if self._type == 2:
