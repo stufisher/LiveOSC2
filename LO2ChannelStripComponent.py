@@ -96,7 +96,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         def cb(msg, src):
             if self._is_track(msg) and self.is_enabled():
                 self.log_message('moo' + str(msg))
-                v = msg[2] if len(msg) == 3 else None
+                v = msg[3] if len(msg) == 4 else None
 
                 if self._track is not None:
                     obj = getattr(self._track.mixer_device, property) if mixer else self._track
