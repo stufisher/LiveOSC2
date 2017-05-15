@@ -195,7 +195,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
 
     def _on_arm_changed(self):
         if self._type == 0 and self._type is not None and self._track.can_be_armed:
-            self.send_default('/live/'+self._track_types[self._type]+'arm', int(self._track.arm))
+            self.send_default('/live/'+self._track_types[self._type]+'arm', self._track.arm)
 
     def _on_track_name_changed(self):
         if self._type is not None:
