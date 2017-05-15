@@ -39,9 +39,8 @@ def wrap_init(fn):
                     child = getattr(self, m)
                     
                     # If its a subject slot replace the listener
-                    if hasattr(method, 'function'):
-                        #method.function = _decorate(method.function, child, m)
-                        method.listener = _decorate(method.function, child, m)
+                    if isinstance(method, SubjectSlot):
+                        method.listener = _decorate(method.listener, child, m)
                     
                     # If its a normal method just overwrite it
                     else:
@@ -96,10 +95,10 @@ class LO2Mixin:
     
     def disconnect(self):
         self.log_message('Disconnecting instance' + str(self))
-        for cb in self._registered_callbacks:
-            self._osc_handler._callback_manager.rem(cb)
+        #for cb in self._registered_callbacks:
+        #    self._osc_handler._callback_manager.rem(cb)
 
-        self.log_message(str(self._osc_handler._callback_manager.callbacks))
+        # self.log_message(str(self._osc_handler._callback_manager.callbacks))
 
     def add_callback(self, msg, func):
         """ Add a callback for an osc message """
