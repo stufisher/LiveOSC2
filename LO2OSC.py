@@ -2,6 +2,7 @@ import OSC
 import socket
 import sys
 import errno
+import traceback
 
 class LO2OSC(object):
 
@@ -44,15 +45,28 @@ class LO2OSC(object):
 
                 try:
                     self._callback_manager.handle(self._data, self._addr)
+
+                except OSC.NoSuchCallback, e:
+                    errmsg = 'Unknown callback: '+str(e.args[0])
+                    self.log_message('LiveOSC: '+errmsg)
+                    self.send('/live/error', errmsg)
+
                 except Exception, e:
-                    self.log_message('LiveOSC: error handling message ' + str(e))
-                    self.send('/live/error', (str(sys.exc_info())))
-                              
+                    errmsg = type(e).__name__+': '+str(e.args[0])
+                    tb = sys.exc_info()
+                    stack = traceback.extract_tb(tb[2])
+
+                    self.log_message('LiveOSC: error handling message ' + errmsg)
+                    self.send('/live/error', errmsg)
+                    self.log_message("".join(traceback.format_list(stack)))
+
+        except socket.error, e:
+            if e.errno == errno.EAGAIN:
+                return
+                self.log_message('LiveOSC: Socket unavailable')
+
         except Exception, e:
-            #self.log_message('LiveOSC: Error: '+str(e))
-            err, msg = e
-            if err != errno.EAGAIN:
-                self.log_message('LiveOSC: error handling message ' + str(error) + ' ' + str(msg))
+            self.log_message('LiveOSC: error handling message '+type(e).__name__+':'+str(e.args[0]))
 
 
 
