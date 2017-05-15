@@ -89,7 +89,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         
         check_id = msg[2] == self._track_id if ty != 2 else True
         
-        self.log_message(str(msg) + ' ' + str(self._track_id) + ' ' + str(self._type))
+        # self.log_message(str(msg) + ' ' + str(self._track_id) + ' ' + str(self._type))
         
         return ty == self._type and check_id
                      
