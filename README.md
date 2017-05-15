@@ -5,7 +5,7 @@ New version of LiveOSC for Live 9. Added various new functionality from L9, like
 
 I have tidied up most of the calls to group them by type, as well as removing what i believe to be redundant calls. If you think things are missing please get in touch.
 
-LiveOSC binds to localhost by default receiving OSC on 9000 and sending on 9001
+LiveOSC binds to localhost by default receiving OSC on 9000 and sending on 9001  
 You can change this dyncamically using:
     /live/set_peer [host] [port]
 
@@ -13,7 +13,7 @@ You can change this dyncamically using:
 Calls without an argument can be passed the dummy argument 'query' for systems that dont support sending osc messages without arguments.
 
 
-* Denotes this is sent automatically from Live upon change
+* Denotes this is sent automatically from Live upon change  
 [int arg] Optional argument
 
 
@@ -26,16 +26,16 @@ create scene
 duplicate scene
 duplicate track
 
-/live/selection (int track_id, int scene_id, int width, int height)
+/live/selection (int track_id, int scene_id, int width, int height)  
     Set the position of the "red ring" in Live
 
 
 Transport
 ---------
-/live/tempo (float tempo)
+/live/tempo (float tempo)  
     Sets the tempo, no argument returns tempo
 
-/live/time
+/live/time  
     Returns the current song time
 
 groove
@@ -43,33 +43,33 @@ groove
 cue points
 set / delete cue
 
-/live/cue/next
-/live/cue/prev
+/live/cue/next  
+/live/cue/prev  
     Jumps to the next and previous cue points in arrangement view
     
-/live/play
-    Starts playing
-/live/play/continue
-    Restarts playing from the current point
-/live/play/select
-    Starts playing the current selection in arrangement view
+/live/play  
+    Starts playing  
+/live/play/continue  
+    Restarts playing from the current point  
+/live/play/select  
+    Starts playing the current selection in arrangement view  
 
 
-/live/undo
-/live/redo
+/live/undo  
+/live/redo  
 
-/live/overdub
-/live/metronome
+/live/overdub  
+/live/metronome  
 
 
-/live/loop
-/live/signature
+/live/loop  
+/live/signature  
 
 
 Scenes
 ------
-/live/scenes
-    Returns the number of scenes in the live set
+/live/scenes  
+    Returns the number of scenes in the live set  
     
 /live/scene/name (int scene_id, [string name])  
     Sets / gets the name for scene_id.  
