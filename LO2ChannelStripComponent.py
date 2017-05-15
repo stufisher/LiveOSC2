@@ -35,7 +35,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
             self.add_callback('/live/'+t+'crossfader', self._crossfader)
 
         for ty in ['track', 'return']:
-            self.add_simple_callback('/live/'+ty+'/name', '_track', 'name', self._is_track, getattr(self, '_lo2__on_track_name_changed'))
+            self.add_simple_callback('/live/'+ty+'/name', '_track', 'name', self._is_track, getattr(self, '_on_track_name_changed'))
             self.add_simple_callback('/live/'+ty+'/color', '_track', 'color', self._is_track, getattr(self, '_on_track_color_changed'))
                     
         self.add_callback('/live/track/state', self._track_state)
@@ -189,16 +189,24 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         if self._type < 2 and self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'mute', self._track.mute)
 
-    def _lo2__on_solo_changed(self):
+    def _on_solo_changed(self):
         if self._type < 2 and self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'solo', self._track.solo)
 
-    def _lo2__on_arm_changed(self):
+    def _on_arm_changed(self):
         if self._type == 0 and self._type is not None and self._track.can_be_armed:
-            self.send_default('/live/'+self._track_types[self._type]+'arm', self._track.arm)
+            self.send_default('/live/'+self._track_types[self._type]+'arm', int(self._track.arm))
 
-    def _lo2__on_track_name_changed(self):
+    def _on_track_name_changed(self):
+        if self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'name', self._track.name)
+
+    def _on_cf_assign_changed(self):
+        if self._type < 2 and self._type is not None:
+            self.send_default('/live/'+self._track_types[self._type]+'crossfader', self._track.mixer_device.crossfade_assign)
+
+    def _on_input_routing_changed(self):
+        pass
 
 
     @subject_slot('color')
@@ -262,5 +270,5 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
                     elif v == 2:
                         self._track.mixer_device.crossfade_assign = Live.MixerDevice.MixerDevice.crossfade_assignments.B
                 else:
-                    self.send_default('/live/'+self._track_types[self._type]+'crossfader', self._track.mixer_device.crossfade_assign)
+                    self._on_cf_assign_changed()
 
