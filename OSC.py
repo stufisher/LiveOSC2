@@ -267,6 +267,9 @@ def decodeOSC(data):
     # return only the data
     return decoded
 
+class NoSuchCallback(Exception):
+    pass
+
 class CallbackManager:
     """This utility class maps OSC addresses to callables.
 
@@ -286,8 +289,11 @@ class CallbackManager:
     def dispatch(self, message, source):
         """Sends decoded OSC data to an appropriate calback"""
         address = message[0]
-        for cb in self.callbacks[address]:
-            cb(message, source)
+        if address in self.callbacks:
+            for cb in self.callbacks[address]:
+                cb(message, source)
+        else:
+            raise NoSuchCallback(address)
 
     def add(self, address, callback):
         """Adds a callback to our set of callbacks,
