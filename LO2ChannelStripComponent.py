@@ -185,7 +185,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
 
 
     # Callbacks
-    def _lo2__on_mute_changed(self):
+    def _on_mute_changed(self):
         if self._type < 2 and self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'mute', self._track.mute)
 
@@ -205,6 +205,7 @@ class LO2ChannelStripComponent(ChannelStripComponent, LO2Mixin):
         if self._type < 2 and self._type is not None:
             self.send_default('/live/'+self._track_types[self._type]+'crossfader', self._track.mixer_device.crossfade_assign)
 
+    # On track rename this is triggered, causing _on_arm_changed to be triggered
     def _on_input_routing_changed(self):
         pass
 
