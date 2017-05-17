@@ -17,6 +17,7 @@ class LiveOSC2(ControlSurface):
         
         with self.component_guard():
             LO2OSC.set_log(self.log_message)
+            LO2OSC.set_message(self.show_message)
             self.osc_handler = LO2OSC()
             
             LO2Mixin.set_osc_handler(self.osc_handler)
@@ -29,9 +30,9 @@ class LiveOSC2(ControlSurface):
             
             self.parse()
 
-        
-        self.show_message('LiveOSC2 loaded')
-        self.osc_handler.send('/live/startup', 1)
+            if not self.osc_handler.error():
+                self.show_message('Ready')
+                self.osc_handler.send('/live/startup', 1)
 
 
     def disconnect(self):

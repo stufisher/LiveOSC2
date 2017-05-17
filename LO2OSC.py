@@ -11,9 +11,15 @@ class LO2OSC(object):
         LO2OSC.log_message = func
 
     @staticmethod
+    def set_message(func):
+        LO2OSC.show_message = func
+
+    @staticmethod
     def release_attributes():
         LO2OSC.log_message = None
+        LO2OSC.show_message = None
 
+    _in_error = False
 
     def __init__(self, remotehost = '127.0.0.1', remoteport=9000, localhost='127.0.0.1', localport=9001):
 
@@ -23,11 +29,20 @@ class LO2OSC(object):
         self._local_addr = (localhost, localport)
         self._remote_addr = (remotehost, remoteport)
         
-        self._socket.bind(self._local_addr)
-        self.log_message('LiveOSC2 starting on: ' + str(self._local_addr) + ', remote addr: '+ str(self._remote_addr))
+        try:
+            self._socket.bind(self._local_addr)
+            self.log_message('Starting on: ' + str(self._local_addr) + ', remote addr: '+ str(self._remote_addr))
+        except:
+            self._in_error = True
+            msg = 'ERROR: Cannot bind to ' + str(self._local_addr) + ', port in use'
+            self.show_message(msg)
+            self.log_message(msg)
 
         self._callback_manager = OSC.CallbackManager()
         self._callback_manager.add('/live/set_peer', self._set_peer)
+
+    def error(self):
+        return self._in_error
 
 
     def send(self, address, msg):
