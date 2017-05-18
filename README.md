@@ -17,6 +17,13 @@ Calls without an argument can be passed the dummy argument 'query' for systems t
 [int arg] Optional argument
 
 
+Installation
+------------
+* Checkout the master branch
+* Rename LiveOSC2-master to LiveOSC2
+* Move the folder to /Applications/Live xxxx/Contents/App-Resources/MIDI Remote Scripts
+
+
 Song
 ----
 
